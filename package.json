@@ -1,0 +1,7 @@
+{
+  "name": "pdvs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Sandro Peixoto <sandro.peixoto@gmail.com>",
+  "license": "MIT"
+}
