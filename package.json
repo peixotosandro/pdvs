@@ -3,5 +3,25 @@
   "version": "1.0.0",
   "main": "index.js",
   "author": "Sandro Peixoto <sandro.peixoto@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "sucrase-node src/server.js",
+    "start-interface": "sucrase-node src/cheapest-routes.js",
+    "dev": "nodemon src/server.js --ignore __tests__"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "sucrase": "^3.12.1",
+    "supertest": "^4.0.2"
+  }
 }
