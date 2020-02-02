@@ -15,7 +15,7 @@ class PdvController {
       return response.status(400).json({ error: 'Validation error' });
     }
 
-    if (await Pdv.findOne({ where: request.document })) {
+    if (await Pdv.findOne({ document: request.body.document })) {
       return response.status(401).json({ error: 'PDV already added.' });
     }
 
