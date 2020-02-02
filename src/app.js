@@ -1,12 +1,7 @@
 import express, { json } from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import routes from './routes';
-
-dotenv.config({
-  path: '.env',
-});
 
 class App {
   constructor() {
@@ -29,7 +24,7 @@ class App {
 
   dbconnection() {
     mongoose.connect(
-      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0-dljuu.mongodb.net/pdvs?retryWrites=true&w=majority`,
+      'mongodb+srv://user-pdvs:user-pdvs@cluster0-dljuu.mongodb.net/pdvs?retryWrites=true&w=majority',
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
