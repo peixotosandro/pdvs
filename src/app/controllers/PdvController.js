@@ -9,21 +9,62 @@ class PdvController {
       document: Yup.string()
         .matches(/[0-9]{13}\/[0-9]{4}/)
         .required(),
+      coverageArea: Yup.array()
+        .of(
+          Yup.array().of(
+            Yup.array()
+              .min(3)
+              .of(Yup.array().min(2))
+          )
+        )
+        .required(),
+      address: Yup.array()
+        .min(2)
+        .required(),
     });
 
     if (!(await schema.isValid(request.body))) {
       return response.status(400).json({ error: 'Validation error' });
     }
 
-    if (await Pdv.findOne({ document: request.body.document })) {
+    const {
+      tradingName,
+      ownerName,
+      document,
+      coverageArea,
+      address,
+    } = request.body;
+
+    if (await Pdv.findOne({ document })) {
       return response.status(401).json({ error: 'PDV already added.' });
     }
 
-    const { id, tradingName, ownerName, document } = await Pdv.create(
-      request.body
-    );
+    const coverageAreaPrep = {
+      type: 'MultiPolygon',
+      coordinates: coverageArea,
+    };
 
-    return response.json({ id, tradingName, ownerName, document });
+    const addressPrep = {
+      type: 'Point',
+      coordinates: address,
+    };
+
+    const { id } = await Pdv.create({
+      tradingName,
+      ownerName,
+      document,
+      coverageArea: coverageAreaPrep,
+      address: addressPrep,
+    });
+
+    return response.json({
+      id,
+      tradingName,
+      ownerName,
+      document,
+      coverageArea: coverageAreaPrep,
+      address: addressPrep,
+    });
   }
 }
 

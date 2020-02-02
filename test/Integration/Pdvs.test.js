@@ -5,7 +5,6 @@ import app from '../../src/app';
 /* global describe, it */
 
 describe('PDV create', () => {
-  process.env.NODE_ENV = 'test';
   it('should register the new PDV.', async () => {
     const response = await request(app)
       .post('/v1/pdvs')
