@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import PdvController from './app/controllers/PdvController';
 
 const routes = new Router();
 
-routes.get('/', (request, response) => {
-  return response.json({ teste: 'teste...' });
-});
+routes.post('/pdvs', PdvController.store);
 
 export default routes;
