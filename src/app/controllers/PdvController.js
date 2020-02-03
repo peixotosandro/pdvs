@@ -14,11 +14,16 @@ class PdvController {
           Yup.array().of(
             Yup.array()
               .min(3)
-              .of(Yup.array().min(2))
+              .of(
+                Yup.array()
+                  .of(Yup.number())
+                  .min(2)
+              )
           )
         )
         .required(),
       address: Yup.array()
+        .of(Yup.number())
         .min(2)
         .required(),
     });
@@ -36,7 +41,7 @@ class PdvController {
     } = request.body;
 
     if (await Pdv.findOne({ document })) {
-      return response.status(401).json({ error: 'PDV already added.' });
+      return response.status(400).json({ error: 'PDV already added.' });
     }
 
     const coverageAreaPrep = {
@@ -57,13 +62,30 @@ class PdvController {
       address: addressPrep,
     });
 
-    return response.json({
+    return response.status(201).json({
       id,
       tradingName,
       ownerName,
       document,
       coverageArea: coverageAreaPrep,
       address: addressPrep,
+    });
+  }
+
+  async show(request, response) {
+    const pdv = await Pdv.findOne({ id: request.params.id });
+    if (!pdv) {
+      return response.status(400).json('PDV does not found.');
+    }
+    const { id, tradingName, ownerName, document, coverageArea, address } = pdv;
+
+    return response.json({
+      id,
+      tradingName,
+      ownerName,
+      document,
+      coverageArea,
+      address,
     });
   }
 }
