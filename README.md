@@ -59,7 +59,7 @@ $ docker run --name api-pdvs -p 9000:9000 -d pdvs
 ```
 ## Endpoints ##
 
-#Exemplos:#
+### Exemplos: ###
 
 * Cadastro PDV
 
