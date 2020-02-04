@@ -59,12 +59,13 @@ $ docker run --name api-pdvs -p 9000:9000 -d pdvs
 ```
 ## Endpoints ##
 
-Exemplos:
+#Exemplos:#
 
 * Cadastro PDV
 
 POST: http://localhost:9000/v1/pdvs
 
+Body da requisição:
 ```javascript
 {
   "tradingName": "Adega da Cerveja - Aquarius",
