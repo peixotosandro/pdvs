@@ -4,8 +4,8 @@ import app from '../../src/app';
 
 /* global describe, it */
 
-describe('PDV create', () => {
-  it('should register the new PDV.', async () => {
+describe('PDVs', () => {
+  it('should register a new PDV.', async () => {
     const response = await request(app)
       .post('/v1/pdvs')
       .send({
@@ -36,14 +36,15 @@ describe('PDV create', () => {
         address: [-45.906543731689446, -23.22107610429399],
       });
 
+    this.id = response.body.id;
     expect(response.status).to.equal(201);
   });
 
-  it('should register the second PDV.', async () => {
+  it('should register another one new PDV.', async () => {
     const response = await request(app)
       .post('/v1/pdvs')
       .send({
-        tradingName: 'Express Beer',
+        tradingName: 'Beer Express',
         ownerName: 'Zé Oliveira',
         document: '1234567890999/0001',
         coverageArea: [
@@ -61,5 +62,65 @@ describe('PDV create', () => {
       });
 
     expect(response.status).to.equal(201);
+  });
+
+  it('should NOT register an existing PDV.', async () => {
+    const response = await request(app)
+      .post('/v1/pdvs')
+      .send({
+        tradingName: 'Beer Express',
+        ownerName: 'Zé Oliveira',
+        document: '1234567890999/0001',
+        coverageArea: [
+          [
+            [
+              [-45.90933322906494, -23.2117682260265],
+              [-45.91057777404785, -23.218670316561205],
+              [-45.90594291687012, -23.21930134704455],
+              [-45.90504169464111, -23.212320406392607],
+              [-45.90933322906494, -23.2117682260265],
+            ],
+          ],
+        ],
+        address: [-45.909247398376465, -23.215081273989707],
+      });
+
+    expect(response.status).to.equal(400);
+  });
+
+  it('should NOT register a PDV with missing or wrong data.', async () => {
+    const response = await request(app)
+      .post('/v1/pdvs')
+      .send({
+        tradingName: 'Beer Express',
+        ownerName: 'Zé Oliveira',
+        document: '1234567890999/0001',
+        coverageArea: [
+          [
+            [
+              [-45.90933322906494, -23.2117682260265],
+              [-45.91057777404785, -23.218670316561205],
+              [-45.90594291687012, -23.21930134704455],
+              [-45.90504169464111, -23.212320406392607],
+              [-45.90933322906494],
+            ],
+          ],
+        ],
+        address: [-45.909247398376465, -23.215081273989707],
+      });
+
+    expect(response.status).to.equal(400);
+    expect(response.body.error).to.equal('Validation error');
+  });
+
+  it('should find the first PDV registered.', async () => {
+    const response = await request(app).get(`/v1/pdvs/${this.id}`);
+    expect(response.status).to.equal(200);
+    expect(response.body.tradingName).to.equal('Adega da Cerveja - Aquarius');
+  });
+
+  it('should NOT find a non-existent PDV.', async () => {
+    const response = await request(app).get('/v1/pdvs/000');
+    expect(response.status).to.equal(404);
   });
 });

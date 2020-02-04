@@ -75,7 +75,7 @@ class PdvController {
   async show(request, response) {
     const pdv = await Pdv.findOne({ id: request.params.id });
     if (!pdv) {
-      return response.status(400).json('PDV does not found.');
+      return response.status(404).json({ message: 'PDV does not found.' });
     }
     const { id, tradingName, ownerName, document, coverageArea, address } = pdv;
 

@@ -7,7 +7,8 @@
   "scripts": {
     "start": "sucrase-node src/server.js",
     "dev": "nodemon src/server.js --ignore test",
-    "test": "SET \"NODE_ENV=test\" && mocha --timeout 120000 --recursive --exit --require sucrase/register ./test/**/*.js"
+    "test": "NODE_ENV=test mocha --timeout 120000 --recursive --exit --require sucrase/register ./test/**/*.js",
+    "test-win": "SET \"NODE_ENV=test\" && mocha --timeout 120000 --recursive --exit --require sucrase/register ./test/**/*.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

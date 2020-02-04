@@ -34,9 +34,9 @@ class SearchController {
     });
 
     if (!pdv) {
-      return response
-        .status(200)
-        .json({ message: 'There are no registered partners in your area.' });
+      return response.status(404).json({
+        message: 'There are no registered partners in that location.',
+      });
     }
 
     const { id, tradingName, ownerName, document, coverageArea, address } = pdv;
