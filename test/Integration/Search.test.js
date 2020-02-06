@@ -27,4 +27,10 @@ describe('Searching PDVs', () => {
     );
     expect(response.status).to.equal(404);
   });
+
+  it('should NOT find a PDV with missing lng/lat.', async () => {
+    const response = await request(app).get('/v1/search?lng=-45.9043765068054');
+    expect(response.status).to.equal(400);
+    expect(response.body.error).to.equal('Validation error');
+  });
 });

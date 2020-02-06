@@ -73,6 +73,18 @@ class PdvController {
   }
 
   async show(request, response) {
+    const schema = Yup.object().shape({
+      id: Yup.string()
+        .matches(
+          /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/
+        )
+        .required(),
+    });
+
+    if (!(await schema.isValid(request.params))) {
+      return response.status(400).json({ error: 'Validation error' });
+    }
+
     const pdv = await Pdv.findOne({ id: request.params.id });
     if (!pdv) {
       return response.status(404).json({ message: 'PDV does not found.' });

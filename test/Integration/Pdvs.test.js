@@ -120,7 +120,15 @@ describe('PDVs', () => {
   });
 
   it('should NOT find a non-existent PDV.', async () => {
-    const response = await request(app).get('/v1/pdvs/000');
+    const response = await request(app).get(
+      '/v1/pdvs/230a5aa0-48d0-11ea-bb3d-7fb31b7bf6b0'
+    );
     expect(response.status).to.equal(404);
+  });
+
+  it('should NOT find a PDV though a wrong id.', async () => {
+    const response = await request(app).get('/v1/pdvs/333-aa-sss');
+    expect(response.status).to.equal(400);
+    expect(response.body.error).to.equal('Validation error');
   });
 });
